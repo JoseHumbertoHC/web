@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horas Solicitadas - ITSA University</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #d83bd2 0%, #6a11cb 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .adelanto-container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(12px);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .adelanto-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .adelanto-header h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .seccion {
+            margin-bottom: 30px;
+        }
+
+        .seccion h2 {
+            font-size: 24px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+        }
+
+        .solicitud-item, .aceptado-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px 50px 20px 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ff00ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .aceptado-item {
+            border-left: 4px solid #4CAF50;
+        }
+
+        .solicitud-item:hover, .aceptado-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .solicitud-item.selected {
+            background: rgba(156, 39, 176, 0.3);
+            border-left: 4px solid #9c27b0;
+        }
+
+        .aceptado-item.selected {
+            background: rgba(244, 67, 54, 0.3);
+            border-left: 4px solid #f44336;
+        }
+
+        .botones-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border: none;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-aceptar {
+            background: linear-gradient(to right, #9c27b0, #e91e63);
+            display: none;
+        }
+
+        .btn-cancelar {
+            background: linear-gradient(to right, #f44336, #d32f2f);
+            display: none;
+        }
+
+        .btn-back {
+            background: linear-gradient(to right, #ff00ff, #ff1493);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .adelanto-footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .credits {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+
+        .checkbox-container {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: #9c27b0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="adelanto-container">
+        <div class="adelanto-header">
+            <h1>ITSA University</h1>
+        </div>
+
+        <div class="seccion" id="solicitudes-section">
+            <h2>HORAS QUE PIDIERON:</h2>
+            
+            <div class="solicitud-item" onclick="selectItem(this, 'solicitud')">
+                <div class="checkbox-container">
+                    <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
+                </div>
+                <p><strong>Taller De Investigación</strong>: Grupo De Sistemas Computacionales 8A Matutino pidió adelantar la hora de las 7:00 am del día de hoy</p>
+            </div>
+        </div>
+
+        <div class="seccion" id="aceptados-section">
+            <h2>ACEPTAR ADELANTO</h2>
+            
+            <h3 style="text-align: center; margin-bottom: 20px; color: rgba(255, 255, 255, 0.8);">USTED ACEPTÓ ADELANTAR LAS SIGUIENTES HORAS:</h3>
+            
+            <div class="aceptado-item" onclick="selectItem(this, 'aceptado')">
+                <div class="checkbox-container">
+                    <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
+                </div>
+                <p><strong>Taller De Investigación II</strong>: Grupo De Gestión Empresarial 4A Matutino usted aceptó adelantar la hora de las 8:00 am del día de mañana</p>
+            </div>
+        </div>
+
+        <div class="botones-container">
+            <button class="btn btn-aceptar" id="btnAceptar" onclick="moverAceptado()">ACEPTAR ADELANTO</button>
+            <button class="btn btn-cancelar" id="btnCancelar" onclick="moverASolicitud()">CANCELAR ADELANTO</button>
+            <button class="btn btn-back" onclick="goBack()">BACK</button>
+        </div>
+
+        <div class="adelanto-footer">
+            <div class="credits">Programacion Web | 2025</div>
+        </div>
+    </div>
+
+    <script>
+        let selectedItem = null;
+        let selectedType = null;
+
+        function selectItem(element, type) {
+            // Deseleccionar el item anterior si existe
+            if (selectedItem) {
+                selectedItem.classList.remove('selected');
+                const checkbox = selectedItem.querySelector('.checkbox');
+                checkbox.checked = false;
+            }
+            
+            // Seleccionar el nuevo item
+            element.classList.add('selected');
+            const checkbox = element.querySelector('.checkbox');
+            checkbox.checked = true;
+            
+            selectedItem = element;
+            selectedType = type;
+            
+            // Mostrar el botón correspondiente
+            document.getElementById('btnAceptar').style.display = type === 'solicitud' ? 'block' : 'none';
+            document.getElementById('btnCancelar').style.display = type === 'aceptado' ? 'block' : 'none';
+        }
+
+        function moverAceptado() {
+            if (selectedItem && selectedType === 'solicitud') {
+                const aceptadoSection = document.getElementById('aceptados-section');
+                const titulo = aceptadoSection.querySelector('h3');
+                
+                // Cambiar clases y tipo del elemento
+                selectedItem.classList.remove('solicitud-item', 'selected');
+                selectedItem.classList.add('aceptado-item');
+                selectedItem.onclick = function() { selectItem(this, 'aceptado'); };
+                selectedItem.querySelector('.checkbox').checked = false;
+                
+                // Mover el elemento justo después del título "USTED ACEPTÓ..."
+                aceptadoSection.insertBefore(selectedItem, titulo.nextSibling);
+                
+                // Deseleccionar
+                selectedItem = null;
+                document.getElementById('btnAceptar').style.display = 'none';
+            }
+        }
+
+        function moverASolicitud() {
+            if (selectedItem && selectedType === 'aceptado') {
+                const solicitudSection = document.getElementById('solicitudes-section');
+                
+                // Cambiar clases y tipo del elemento
+                selectedItem.classList.remove('aceptado-item', 'selected');
+                selectedItem.classList.add('solicitud-item');
+                selectedItem.onclick = function() { selectItem(this, 'solicitud'); };
+                selectedItem.querySelector('.checkbox').checked = false;
+                
+                // Mover el elemento al final de la sección de solicitudes
+                solicitudSection.appendChild(selectedItem);
+                
+                // Deseleccionar
+                selectedItem = null;
+                document.getElementById('btnCancelar').style.display = 'none';
+            }
+        }
+
+        // Función para el botón BACK
+        function goBack() {
+            // Opción 1: Volver a la página anterior en el historial
+            window.history.back();
+            
+            // Opción 2: Redirigir a una página específica (descomenta la siguiente línea y comenta la anterior)
+            // window.location.href = "dashboard.html"; // Cambia esto por la URL a la que quieres redirigir
+        }
+    </script>
+</body>
+</html>

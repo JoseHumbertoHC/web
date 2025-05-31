@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recomendación de Carrera - ITSA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #d83bd2 0%, #6a11cb 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(12px);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .intro-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .intro-text {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .test-container {
+            display: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .pregunta {
+            margin-bottom: 25px;
+        }
+
+        .pregunta-texto {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .opcion {
+            display: block;
+            margin-bottom: 12px;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .opcion:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .opcion input {
+            margin-right: 10px;
+        }
+
+        .resultado-container {
+            display: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .resultado-titulo {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #ff00ff;
+        }
+
+        .resultado-carrera {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .resultado-descripcion {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .resultado-perfil {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            background: linear-gradient(to right, #9c27b0, #e91e63);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(156, 39, 176, 0.3);
+            margin: 10px auto;
+            display: block;
+            width: fit-content;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(156, 39, 176, 0.4);
+        }
+
+        .btn-iniciar {
+            background: linear-gradient(to right, #ff00ff, #ff1493);
+        }
+
+        .btn-enviar {
+            background: linear-gradient(to right, #00bcd4, #2196f3);
+        }
+
+        .btn-aceptar {
+            background: linear-gradient(to right, #4caf50, #8bc34a);
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-button {
+            background: linear-gradient(to right, #ff00ff, #ff1493);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(255, 20, 147, 0.3);
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 20, 147, 0.4);
+        }
+
+        .credits {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+
+        .mensaje-error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.5);
+            color: #ff8a80;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .progreso {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        /* Nuevos estilos para los botones de navegación */
+        .navegacion-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .btn-anterior {
+            background: linear-gradient(to right, #9c27b0, #e91e63);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(156, 39, 176, 0.3);
+        }
+
+        .btn-siguiente {
+            background: linear-gradient(to right, #00bcd4, #2196f3);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(0, 188, 212, 0.3);
+        }
+
+        .btn-anterior:hover, .btn-siguiente:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>RECOMENDACIÓN DE CARRERA</h1>
+        </div>
+
+        <div class="intro-container" id="introContainer">
+            <p class="intro-text">
+                Este test vocacional te ayudará a descubrir qué carrera profesional se adapta mejor a tus intereses, 
+                habilidades y personalidad. Responde honestamente a las preguntas y al final recibirás una recomendación 
+                personalizada basada en tus respuestas.
+            </p>
+            <button class="btn btn-iniciar" onclick="iniciarTest()">INICIAR TEST</button>
+        </div>
+
+        <div class="mensaje-error" id="mensajeError">
+            Por favor responde todas las preguntas antes de enviar.
+        </div>
+
+        <div class="test-container" id="testContainer">
+            <div class="progreso" id="progreso">Pregunta 1 de 15</div>
+            
+            <!-- Preguntas generadas dinámicamente por JavaScript -->
+            <div id="preguntasContainer"></div>
+            
+            <div class="navegacion-container">
+                <button class="btn-anterior" id="btnAnterior" onclick="preguntaAnterior()">ANTERIOR</button>
+                <button class="btn-siguiente" id="btnSiguiente" onclick="preguntaSiguiente()">SIGUIENTE</button>
+            </div>
+            
+            <button class="btn btn-enviar" id="btnEnviar" onclick="enviarRespuestas()">ENVIAR RESPUESTAS</button>
+        </div>
+
+        <div class="resultado-container" id="resultadoContainer">
+            <h2 class="resultado-titulo">TU RECOMENDACIÓN</h2>
+            <h3 class="resultado-carrera" id="carreraRecomendada">Ingeniería en Sistemas Computacionales</h3>
+            <p class="resultado-perfil" id="tipoPersonalidad">Perfil: Analítico y Creativo</p>
+            <p class="resultado-descripcion" id="explicacionResultado">
+                Basado en tus respuestas, eres una persona que disfruta resolver problemas complejos, 
+                tiene habilidad para el pensamiento lógico y muestra interés por la tecnología. 
+                Eres metódico y te gusta entender cómo funcionan las cosas.
+            </p>
+            <button class="btn btn-aceptar" onclick="reiniciarTest()">ACEPTAR</button>
+        </div>
+
+        <div class="footer">
+            <button class="back-button" onclick="window.history.back()">BACK</button>
+            <div class="credits">Programacion Web | 2025</div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let respuestas = [];
+        let preguntaActual = 0;
+
+        // Preguntas del test
+        const preguntas = [
+            {
+                texto: "¿Qué tipo de actividades prefieres en tu tiempo libre?",
+                opciones: [
+                    { texto: "Resolver problemas o puzzles", valor: "sistemas" },
+                    { texto: "Construir o reparar objetos", valor: "mecatronica" },
+                    { texto: "Organizar eventos o actividades", valor: "gestion" },
+                    { texto: "Experimentar con dispositivos electrónicos", valor: "electronica" },
+                    { texto: "Optimizar procesos o sistemas", valor: "industrial" }
+                ]
+            },
+            {
+                texto: "¿Cómo describirías tu forma de pensar?",
+                opciones: [
+                    { texto: "Analítica y lógica", valor: "sistemas" },
+                    { texto: "Creativa e innovadora", valor: "mecatronica" },
+                    { texto: "Práctica y organizada", valor: "gestion" },
+                    { texto: "Técnica y detallista", valor: "electronica" },
+                    { texto: "Estratégica y eficiente", valor: "industrial" }
+                ]
+            },
+            {
+                texto: "¿Qué tipo de problemas disfrutas resolver?",
+                opciones: [
+                    { texto: "Problemas matemáticos o de programación", valor: "sistemas" },
+                    { texto: "Problemas mecánicos o de diseño", valor: "mecatronica" },
+                    { texto: "Problemas de organización o gestión", valor: "gestion" },
+                    { texto: "Problemas eléctricos o circuitos", valor: "electronica" },
+                    { texto: "Problemas de procesos o producción", valor: "industrial" }
+                ]
+            },
+            {
+                texto: "¿Qué materia escolar disfrutabas más?",
+                opciones: [
+                    { texto: "Matemáticas avanzadas o informática", valor: "sistemas" },
+                    { texto: "Tecnología o dibujo técnico", valor: "mecatronica" },
+                    { texto: "Administración o economía", valor: "gestion" },
+                    { texto: "Física o electrónica", valor: "electronica" },
+                    { texto: "Estadística o química", valor: "industrial" }
+                ]
+            },
+            {
+                texto: "¿Cómo te describes en un trabajo en equipo?",
+                opciones: [
+                    { texto: "El que propone soluciones técnicas", valor: "sistemas" },
+                    { texto: "El que diseña o construye prototipos", valor: "mecatronica" },
+                    { texto: "El que organiza y coordina", valor: "gestion" },
+                    { texto: "El que soluciona problemas técnicos", valor: "electronica" },
+                    { texto: "El que optimiza procesos", valor: "industrial" }
+                ]
+            },
+            {
+                texto: "¿Qué tipo de proyectos te motivan más?",
+                opciones: [
+                    { texto: "Desarrollar software o aplicaciones", valor: "sistemas" },
+                    { texto: "Crear robots o sistemas automatizados", valor: "mecatronica" },
+                    { texto: "Planear estrategias de negocio", valor: "gestion" },
+                    { texto: "Diseñar circuitos o dispositivos", valor: "electronica" },
+                    { texto: "Mejorar sistemas de producción", valor: "industrial" }
+                ]
+            },
+            {
+                texto: "¿Qué habilidades consideras que son tus fortalezas?",
+                opciones: [
+                    { texto: "Pensamiento algorítmico", valor: "sistemas" },
+                    { texto: "Habilidad manual y diseño", valor: "mecatronica" },
+                    { texto: "Liderazgo y comunicación", valor: "gestion" },
+                    { texto: "Análisis técnico y precisión", valor: "electronica" },
+                    { texto: "Planificación y optimización", valor: "industrial" }
+                ]
+            },
+            {
+                texto: "¿En qué ambiente laboral te imaginas?",
+                opciones: [
+                    { texto: "Oficina con computadoras avanzadas", valor: "sistemas" },
+                    { texto: "Taller o laboratorio de prototipos", valor: "mecatronica" },
+                    { texto: "Entorno empresarial dinámico", valor: "gestion" },
+                    { texto: "Laboratorio electrónico o industrial", valor: "electronica" },
+                    { texto: "Planta industrial o de manufactura", valor: "industrial" }
+                ]
+            },
+            {
+                texto: "¿Qué revista o tema te interesaría leer?",
+                opciones: [
+                    { texto: "Tecnología y programación", valor: "sistemas" },
+                    { texto: "Robótica e innovación tecnológica", valor: "mecatronica" },
+                    { texto: "Negocios y emprendimiento", valor: "gestion" },
+                    { texto: "Electrónica y circuitos", valor: "electronica" },
+                    { texto: "Producción y calidad industrial", valor: "industrial" }
+                ]
+            },
+            {
+                texto: "¿Qué te gustaría lograr profesionalmente?",
+                opciones: [
+                    { texto: "Desarrollar sistemas innovadores", valor: "sistemas" },
+                    { texto: "Crear inventos tecnológicos", valor: "mecatronica" },
+                    { texto: "Dirigir una empresa exitosa", valor: "gestion" },
+                    { texto: "Diseñar dispositivos electrónicos", valor: "electronica" },
+                    { texto: "Optimizar procesos industriales", valor: "industrial" }
+                ]
+            },
+            {
+                texto: "¿Cómo manejas los desafíos?",
+                opciones: [
+                    { texto: "Analizando y buscando soluciones lógicas", valor: "sistemas" },
+                    { texto: "Experimentando con diferentes enfoques", valor: "mecatronica" },
+                    { texto: "Organizando recursos y personas", valor: "gestion" },
+                    { texto: "Probando métodos técnicos sistemáticos", valor: "electronica" },
+                    { texto: "Implementando procesos eficientes", valor: "industrial" }
+                ]
+            },
+            {
+                texto: "¿Qué tipo de herramientas prefieres usar?",
+                opciones: [
+                    { texto: "Lenguajes de programación", valor: "sistemas" },
+                    { texto: "Herramientas mecánicas y de diseño", valor: "mecatronica" },
+                    { texto: "Software de gestión y planeación", valor: "gestion" },
+                    { texto: "Instrumentos de medición electrónica", valor: "electronica" },
+                    { texto: "Herramientas de análisis de procesos", valor: "industrial" }
+                ]
+            },
+            {
+                texto: "¿Qué te atrae más de la tecnología?",
+                opciones: [
+                    { texto: "El desarrollo de software y algoritmos", valor: "sistemas" },
+                    { texto: "La integración de sistemas mecánicos y electrónicos", valor: "mecatronica" },
+                    { texto: "Su aplicación para mejorar negocios", valor: "gestion" },
+                    { texto: "El diseño de circuitos y componentes", valor: "electronica" },
+                    { texto: "Su uso para automatizar producción", valor: "industrial" }
+                ]
+            },
+            {
+                texto: "¿Cómo te defines en cuanto a detalles?",
+                opciones: [
+                    { texto: "Muy atento a detalles técnicos", valor: "sistemas" },
+                    { texto: "Creativo pero práctico", valor: "mecatronica" },
+                    { texto: "Enfocado en el panorama general", valor: "gestion" },
+                    { texto: "Extremadamente preciso y detallista", valor: "electronica" },
+                    { texto: "Organizado y metódico", valor: "industrial" }
+                ]
+            },
+            {
+                texto: "¿Qué te parece más interesante?",
+                opciones: [
+                    { texto: "Inteligencia artificial", valor: "sistemas" },
+                    { texto: "Robótica avanzada", valor: "mecatronica" },
+                    { texto: "Modelos de negocios innovadores", valor: "gestion" },
+                    { texto: "Tecnología de circuitos integrados", valor: "electronica" },
+                    { texto: "Sistemas de manufactura automatizada", valor: "industrial" }
+                ]
+            }
+        ];
+
+        // Resultados posibles
+        const resultados = {
+            sistemas: {
+                carrera: "Ingeniería en Sistemas Computacionales",
+                perfil: "Analítico y Creativo",
+                descripcion: "Eres una persona con fuerte pensamiento lógico y gusto por la tecnología. Disfrutas resolver problemas complejos y crear soluciones innovadoras mediante el desarrollo de software. Tu mente analítica y capacidad para entender sistemas abstractos te hacen ideal para esta carrera donde podrás diseñar aplicaciones, trabajar con inteligencia artificial y desarrollar sistemas computacionales avanzados."
+            },
+            mecatronica: {
+                carrera: "Ingeniería Mecatrónica",
+                perfil: "Innovador y Práctico",
+                descripcion: "Tienes una mente creativa que disfruta integrar diferentes disciplinas tecnológicas. Tu habilidad para combinar mecánica, electrónica y programación te permite diseñar sistemas inteligentes y robots. Eres el tipo de persona que disfruta ver cómo las cosas funcionan y cómo mejorarlas, lo que te hace perfecto para esta carrera interdisciplinaria donde crearás soluciones tecnológicas innovadoras."
+            },
+            gestion: {
+                carrera: "Ingeniería en Gestión Empresarial",
+                perfil: "Líder y Estratégico",
+                descripcion: "Eres una persona con visión empresarial y habilidades organizativas. Tienes facilidad para entender las necesidades del mercado y crear estrategias efectivas. Tu capacidad para liderar equipos y gestionar recursos te hace ideal para esta carrera donde aprenderás a dirigir empresas, desarrollar planes de negocio y optimizar operaciones organizacionales en un entorno globalizado."
+            },
+            electronica: {
+                carrera: "Ingeniería Electrónica",
+                perfil: "Técnico y Detallista",
+                descripcion: "Tienes una mente analítica con gran atención al detalle y pasión por entender cómo funcionan los dispositivos electrónicos. Disfrutas trabajando con circuitos, componentes y sistemas de control. Tu paciencia y precisión te hacen ideal para esta carrera donde diseñarás sistemas electrónicos, trabajarás con telecomunicaciones y desarrollarás tecnología de vanguardia."
+            },
+            industrial: {
+                carrera: "Ingeniería Industrial",
+                perfil: "Organizado y Eficiente",
+                descripcion: "Eres una persona metódica que busca la optimización en todo lo que hace. Tienes habilidad para analizar procesos y encontrar formas de hacerlos más eficientes. Tu enfoque práctico y capacidad para ver el sistema completo te hacen ideal para esta carrera donde aprenderás a mejorar procesos productivos, garantizar calidad y gestionar recursos en entornos industriales y de servicios."
+            }
+        };
+
+        // Función para iniciar el test
+        function iniciarTest() {
+            document.getElementById('introContainer').style.display = 'none';
+            document.getElementById('testContainer').style.display = 'block';
+            document.getElementById('resultadoContainer').style.display = 'none';
+            document.getElementById('mensajeError').style.display = 'none';
+            
+            respuestas = [];
+            preguntaActual = 0;
+            mostrarPregunta();
+            actualizarBotonesNavegacion();
+        }
+
+        // Función para mostrar la pregunta actual
+        function mostrarPregunta() {
+            const preguntasContainer = document.getElementById('preguntasContainer');
+            const pregunta = preguntas[preguntaActual];
+            
+            // Actualizar progreso
+            document.getElementById('progreso').textContent = `Pregunta ${preguntaActual + 1} de ${preguntas.length}`;
+            
+            // Crear HTML de la pregunta
+            let html = `<div class="pregunta">
+                <p class="pregunta-texto">${pregunta.texto}</p>`;
+            
+            // Añadir opciones
+            pregunta.opciones.forEach((opcion, index) => {
+                html += `<label class="opcion">
+                    <input type="radio" name="pregunta" value="${opcion.valor}" ${respuestas[preguntaActual] === opcion.valor ? 'checked' : ''}>
+                    ${opcion.texto}
+                </label>`;
+            });
+            
+            html += `</div>`;
+            preguntasContainer.innerHTML = html;
+            
+            // Actualizar visibilidad del botón de enviar
+            document.getElementById('btnEnviar').style.display = (preguntaActual === preguntas.length - 1) ? 'block' : 'none';
+        }
+
+        // Función para actualizar estado de los botones de navegación
+        function actualizarBotonesNavegacion() {
+            document.getElementById('btnAnterior').style.display = (preguntaActual > 0) ? 'block' : 'none';
+            document.getElementById('btnSiguiente').style.display = (preguntaActual < preguntas.length - 1) ? 'block' : 'none';
+        }
+
+        // Función para guardar respuesta
+        function guardarRespuesta() {
+            const seleccionada = document.querySelector('input[name="pregunta"]:checked');
+            if (seleccionada) {
+                respuestas[preguntaActual] = seleccionada.value;
+                return true;
+            }
+            return false;
+        }
+
+        // Función para ir a la pregunta anterior
+        function preguntaAnterior() {
+            if (preguntaActual > 0) {
+                guardarRespuesta(); // Guardar respuesta actual antes de cambiar
+                preguntaActual--;
+                mostrarPregunta();
+                actualizarBotonesNavegacion();
+                document.getElementById('mensajeError').style.display = 'none';
+            }
+        }
+
+        // Función para ir a la pregunta siguiente
+        function preguntaSiguiente() {
+            if (preguntaActual < preguntas.length - 1) {
+                if (guardarRespuesta()) {
+                    preguntaActual++;
+                    mostrarPregunta();
+                    actualizarBotonesNavegacion();
+                    document.getElementById('mensajeError').style.display = 'none';
+                } else {
+                    document.getElementById('mensajeError').style.display = 'block';
+                    document.getElementById('mensajeError').textContent = "Por favor selecciona una respuesta antes de continuar.";
+                }
+            }
+        }
+
+        // Función para enviar respuestas
+        function enviarRespuestas() {
+            if (!guardarRespuesta()) {
+                document.getElementById('mensajeError').style.display = 'block';
+                document.getElementById('mensajeError').textContent = "Por favor selecciona una respuesta antes de enviar.";
+                return;
+            }
+            
+            // Verificar si faltan preguntas
+            if (respuestas.length < preguntas.length) {
+                document.getElementById('mensajeError').style.display = 'block';
+                document.getElementById('mensajeError').textContent = "Por favor responde todas las preguntas antes de enviar.";
+                return;
+            }
+            
+            // Calcular resultado
+            const conteo = {
+                sistemas: 0,
+                mecatronica: 0,
+                gestion: 0,
+                electronica: 0,
+                industrial: 0
+            };
+            
+            respuestas.forEach(respuesta => {
+                conteo[respuesta]++;
+            });
+            
+            // Encontrar la carrera con más votos
+            let carreraRecomendada = 'sistemas';
+            let maxVotos = 0;
+            
+            for (const carrera in conteo) {
+                if (conteo[carrera] > maxVotos) {
+                    maxVotos = conteo[carrera];
+                    carreraRecomendada = carrera;
+                }
+            }
+            
+            // Mostrar resultado
+            mostrarResultado(carreraRecomendada);
+        }
+
+        // Función para mostrar el resultado
+        function mostrarResultado(carrera) {
+            document.getElementById('testContainer').style.display = 'none';
+            document.getElementById('resultadoContainer').style.display = 'block';
+            
+            const resultado = resultados[carrera];
+            document.getElementById('carreraRecomendada').textContent = resultado.carrera;
+            document.getElementById('tipoPersonalidad').textContent = `Perfil: ${resultado.perfil}`;
+            document.getElementById('explicacionResultado').textContent = resultado.descripcion;
+        }
+
+        // Función para reiniciar el test
+        function reiniciarTest() {
+            document.getElementById('introContainer').style.display = 'block';
+            document.getElementById('resultadoContainer').style.display = 'none';
+            respuestas = [];
+            preguntaActual = 0;
+        }
+
+        // Event listeners para navegación con teclado
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('testContainer').style.display === 'block') {
+                if (e.key === 'ArrowLeft' && preguntaActual > 0) {
+                    preguntaAnterior();
+                } else if (e.key === 'ArrowRight' && preguntaActual < preguntas.length - 1) {
+                    preguntaSiguiente();
+                } else if (e.key === 'Enter') {
+                    if (preguntaActual < preguntas.length - 1) {
+                        preguntaSiguiente();
+                    } else {
+                        enviarRespuestas();
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

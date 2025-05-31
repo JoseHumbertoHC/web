@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adelantar Horas - ITSA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #d83bd2 0%, #6a11cb 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .adelanto-container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(12px);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .adelanto-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .adelanto-header h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .seccion {
+            margin-bottom: 30px;
+        }
+
+        .seccion h2 {
+            font-size: 24px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+        }
+
+        .selector-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: #black; /* Texto morado */
+            padding: 12px 15px;
+            font-size: 16px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        option {
+            color: #333; /* Color oscuro para mejor legibilidad */
+            background-color: white;
+        }
+
+        .pedir-btn {
+            background: linear-gradient(to right, #9c27b0, #e91e63);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(156, 39, 176, 0.3);
+            margin-left: auto;
+        }
+
+        .pedir-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(156, 39, 176, 0.4);
+        }
+
+        .profesor-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ff00ff;
+        }
+
+        .profesor-nombre {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .profesor-detalle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .adelanto-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-button {
+            background: linear-gradient(to right, #ff00ff, #ff1493);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(255, 20, 147, 0.3);
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 20, 147, 0.4);
+        }
+
+        .credits {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+
+        .mensaje-exito {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+            color: #a5d6a7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="adelanto-container">
+        <div class="adelanto-header">
+            <h1>ADELANTAR HORAS</h1>
+        </div>
+
+        <div class="seccion">
+            <h2>HORA PARA PEDIR:</h2>
+            <div class="selector-container">
+                <select id="maestro">
+                    <option value="" disabled selected>Seleccionar maestro</option>
+                    <option value="1">Carlos Méndez (Matemáticas)</option>
+                    <option value="2">Laura Torres (Física)</option>
+                    <option value="3">Javier Ríos (Programación)</option>
+                    <option value="4">Ana Beltrán (Inglés)</option>
+                    <option value="5">Miguel Ángel Cruz (Base de Datos)</option>
+                    <option value="6">Sofía Jiménez (Redes)</option>
+                    <option value="7">Roberto Sánchez (Ética)</option>
+                </select>
+                
+                <select id="hora">
+                    <option value="" disabled selected>Seleccionar hora</option>
+                    <option value="7">7:00 AM</option>
+                    <option value="8">8:00 AM</option>
+                    <option value="9">9:00 AM</option>
+                    <option value="10">10:00 AM</option>
+                    <option value="11">11:00 AM</option>
+                    <option value="12">12:00 PM</option>
+                    <option value="13">1:00 PM</option>
+                </select>
+                
+                <select id="fecha">
+                    <option value="" disabled selected>Seleccionar fecha</option>
+                    <option value="lunes">Lunes</option>
+                    <option value="martes">Martes</option>
+                    <option value="miercoles">Miércoles</option>
+                    <option value="jueves">Jueves</option>
+                    <option value="viernes">Viernes</option>
+                </select>
+                
+                <button class="pedir-btn" id="btnPedir">PEDIR</button>
+            </div>
+            
+            <div class="mensaje-exito" id="mensajeExito">
+                ¡Solicitud enviada con éxito!
+            </div>
+        </div>
+
+        <div class="seccion">
+            <h2>HORAS ADELANTADAS:</h2>
+            
+            <div class="profesor-item">
+                <div class="profesor-nombre">Dora Lizeth Colunga Hernández (Matemáticas)</div>
+                <div class="profesor-detalle">Adelantará su hora de las 8:00 AM del día de hoy (Lunes)</div>
+            </div>
+            
+            <div class="profesor-item">
+                <div class="profesor-nombre">Dora Lizeth Colunga Hernández (Matemáticas)</div>
+                <div class="profesor-detalle">Adelantará su hora de las 7:00 AM del día de mañana (Martes)</div>
+            </div>
+        </div>
+
+        <div class="adelanto-footer">
+            <button class="back-button" onclick="window.history.back()">BACK</button>
+            <div class="credits">Programacion Web | 2025</div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('btnPedir').addEventListener('click', function() {
+            // Validar que se hayan seleccionado todos los campos
+            const maestro = document.getElementById('maestro').value;
+            const hora = document.getElementById('hora').value;
+            const fecha = document.getElementById('fecha').value;
+            
+            if(!maestro || !hora || !fecha) {
+                alert('Por favor complete todos los campos');
+                return;
+            }
+            
+            // Mostrar mensaje de éxito
+            const mensaje = document.getElementById('mensajeExito');
+            mensaje.style.display = 'block';
+            
+            // Limpiar los selectores
+            document.getElementById('maestro').value = '';
+            document.getElementById('hora').value = '';
+            document.getElementById('fecha').value = '';
+            
+            // Ocultar mensaje después de 3 segundos
+            setTimeout(() => {
+                mensaje.style.display = 'none';
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
