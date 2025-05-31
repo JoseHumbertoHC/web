@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #d83bd2 0%, #6a11cb 100%);
+            color: white;
+        }
+
+        form {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(12px);
+            border-radius: 15px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 10px;
+        }
+
+        tr:first-child td {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 600;
+            padding-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input[type=text]:focus, input[type=password]:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+
+        input[type=text]::placeholder, input[type=password]::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        input[type=submit] {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ff00ff 0%, #ff1493 50%, #9400d3 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(255, 58, 172, 0.4);
+        }
+
+        input[type=submit]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 58, 172, 0.6);
+        }
+
+        .lock-logo {
+            width: 100px;
+            height: 100px;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            font-size: 13px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            text-decoration: underline;
+            transform: translateX(2px);
+        }
+    </style>
+</head>
+<body>
+    <form method="post" action="login.php">
+        <table>
+            <tr><td colspan="2">Login</td></tr>
+            <tr>
+                <td align="center" rowspan="5">
+                    <svg class="lock-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="lockGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#d83bd2" />
+                                <stop offset="100%" stop-color="#6a11cb" />
+                            </linearGradient>
+                            <linearGradient id="lockShine" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="rgba(255,255,255,0.8)" />
+                                <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M12 2C9.24 2 7 4.24 7 7v3H6c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2h-1V7c0-2.76-2.24-5-5-5zm0 2c1.66 0 3 1.34 3 3v3H9V7c0-1.66 1.34-3 3-3z" fill="url(#lockGradient)"/>
+                        <path d="M12 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" fill="#fff"/>
+                        <path d="M8 7v3h8V7c0-2.21-1.79-4-4-4S8 4.79 8 7z" fill="url(#lockShine)" opacity="0.3"/>
+                    </svg>
+                </td>
+                <td><label>Usuario</label></td>
+            </tr>
+            <tr>
+                <td><input type="text" name="txtusuario" placeholder="Ingresa tu usuario"/></td>
+            </tr>
+            <tr>
+                <td><label>Password</label></td>
+            </tr>
+            <tr>
+                <td><input type="password" name="txtpassword" placeholder="••••••••"/> </td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Ingresar"/> </td>
+            </tr>
+        </table>
+        <div class="footer-links">
+            <a href="#">¿Olvidaste tu contraseña?</a>
+            <a href="#">Crear cuenta</a>
+        </div>
+    </form>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = e.target;
+            
+            // Aquí puedes agregar validaciones o procesamiento adicional si lo necesitas
+            
+            // Finalmente envía el formulario
+            form.submit();
+        });
+    </script>
+</body>
+</html>
